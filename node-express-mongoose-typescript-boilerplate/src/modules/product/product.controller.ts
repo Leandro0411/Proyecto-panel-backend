@@ -1,6 +1,7 @@
 import httpStatus from 'http-status';
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
+import buildSearchRegex from '../utils/buildSearchRegex';
 import catchAsync from '../utils/catchAsync';
 import ApiError from '../errors/ApiError';
 import pick from '../utils/pick';
@@ -26,6 +27,11 @@ export const getProducts = catchAsync(async (req: Request, res: Response) => {
   // pick() toma solo los campos permitidos del query string
   // Ejemplo: /v1/products?category=electrónica&page=2&limit=5
   const filter = pick(req.query, ['name', 'category']);
+
+  if (typeof filter['name'] === 'string' && filter['name'].trim()) {
+    filter['name'] = buildSearchRegex(filter['name']);
+  }
+
   const options: IOptions = pick(req.query, ['sortBy', 'limit', 'page', 'projectBy']);
   const result = await productService.queryProducts(filter, options);
   res.send(result);

@@ -1,6 +1,7 @@
 import httpStatus from 'http-status';
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
+import buildSearchRegex from '../utils/buildSearchRegex';
 import catchAsync from '../utils/catchAsync';
 import ApiError from '../errors/ApiError';
 import pick from '../utils/pick';
@@ -14,6 +15,11 @@ export const createUser = catchAsync(async (req: Request, res: Response) => {
 
 export const getUsers = catchAsync(async (req: Request, res: Response) => {
   const filter = pick(req.query, ['name', 'role']);
+
+  if (typeof filter['name'] === 'string' && filter['name'].trim()) {
+    filter['name'] = buildSearchRegex(filter['name']);
+  }
+
   const options: IOptions = pick(req.query, ['sortBy', 'limit', 'page', 'projectBy']);
   const result = await userService.queryUsers(filter, options);
   res.send(result);

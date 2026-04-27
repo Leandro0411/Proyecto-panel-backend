@@ -1,5 +1,6 @@
 import catchAsync from './catchAsync';
+import buildSearchRegex from './buildSearchRegex';
 import pick from './pick';
 import authLimiter from './rateLimiter';
 
-export { catchAsync, pick, authLimiter };
+export { catchAsync, buildSearchRegex, pick, authLimiter };
