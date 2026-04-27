@@ -47,6 +47,39 @@ components:
         tokens:
           $ref: '#/components/schemas/AuthTokens'
 
+    
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID único del producto (MongoDB ObjectId)
+        name:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción detallada del producto
+        price:
+          type: number
+          minimum: 0
+          description: Precio del producto en la moneda local
+        category:
+          type: string
+          description: Categoría del producto (siempre en minúsculas)
+        stock:
+          type: integer
+          minimum: 0
+          description: Unidades disponibles en inventario
+      example:
+        id: 5ebac534954b54139806c112
+        name: Laptop Gaming Pro
+        description: Laptop de alto rendimiento para gaming profesional
+        price: 1299.99
+        category: electronica
+        stock: 50
+
+
     Error:
       type: object
       properties:
