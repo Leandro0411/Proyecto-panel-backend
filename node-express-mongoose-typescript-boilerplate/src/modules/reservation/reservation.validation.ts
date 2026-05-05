@@ -22,3 +22,12 @@ export const getMyReservations = {
     page: Joi.number().integer(),
   }),
 };
+
+export const getAdminOverview = {
+  query: Joi.object().keys({
+    sortBy: Joi.string(),
+    projectBy: Joi.string(),
+    limit: Joi.number().integer().min(1).max(20),
+    page: Joi.number().integer().min(1),
+  }),
+};

@@ -24,3 +24,10 @@ export const getMyReservations = catchAsync(async (req: Request, res: Response) 
 
   res.send(reservations);
 });
+
+export const getAdminOverview = catchAsync(async (req: Request, res: Response) => {
+  const options: IOptions = pick(req.query, ['sortBy', 'limit', 'page', 'projectBy']);
+  const overview = await reservationService.getAdminOverview(options);
+
+  res.send(overview);
+});

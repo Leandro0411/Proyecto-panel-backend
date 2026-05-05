@@ -20,6 +20,50 @@ export interface IReservation {
   status: 'confirmed';
 }
 
+export interface IReservationAdminUser {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+}
+
+export interface IReservationAdminRecord {
+  id: string;
+  user: IReservationAdminUser;
+  items: IReservationItem[];
+  total: number;
+  totalItems: number;
+  status: 'confirmed';
+  createdAt: Date | string;
+}
+
+export interface IReservationSummary {
+  totalRevenue: number;
+  totalReservations: number;
+  totalItemsSold: number;
+  averageTicket: number;
+}
+
+export interface IReservationMonthlySale {
+  month: string;
+  revenue: number;
+  reservations: number;
+  itemsSold: number;
+}
+
+export interface IReservationCategoryBreakdown {
+  category: ProductCategory;
+  revenue: number;
+  itemsSold: number;
+}
+
+export interface IReservationAdminOverview {
+  summary: IReservationSummary;
+  monthlySales: IReservationMonthlySale[];
+  categoryBreakdown: IReservationCategoryBreakdown[];
+  recentReservations: QueryResult;
+}
+
 export interface IReservationDoc extends IReservation, Document {}
 
 export interface IReservationModel extends Model<IReservationDoc> {

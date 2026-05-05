@@ -13,4 +13,12 @@ router
   .route('/my')
   .get(auth(), validate(reservationValidation.getMyReservations), reservationController.getMyReservations);
 
+router
+  .route('/admin/overview')
+  .get(
+    auth('manageProducts'),
+    validate(reservationValidation.getAdminOverview),
+    reservationController.getAdminOverview
+  );
+
 export default router;
