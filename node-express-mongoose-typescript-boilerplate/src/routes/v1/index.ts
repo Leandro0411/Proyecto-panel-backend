@@ -3,6 +3,7 @@ import authRoute from './auth.route';
 import docsRoute from './swagger.route';
 import userRoute from './user.route';
 import productRoute from './product.route'; 
+import reservationRoute from './reservation.route';
 import config from '../../config/config';
 
 const router = express.Router();
@@ -24,6 +25,10 @@ const defaultIRoute: IRoute[] = [
   {
     path: '/products',      
     route: productRoute,
+  },
+  {
+    path: '/reservations',
+    route: reservationRoute,
   },
 ];
 
