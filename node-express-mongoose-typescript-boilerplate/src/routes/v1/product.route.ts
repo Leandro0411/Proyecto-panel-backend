@@ -2,22 +2,37 @@ import express, { Router } from 'express';
 import { validate } from '../../modules/validate';
 import { auth } from '../../modules/auth';
 import { productController, productValidation } from '../../modules/product';
+import { productUpload } from '../../modules/product/product.upload';
 
 const router: Router = express.Router();
 
 router
   .route('/')
   // POST /v1/products → solo admins pueden crear productos
-  .post(auth('manageUsers'), validate(productValidation.createProduct), productController.createProduct)
+  .post(
+    auth('manageUsers'),
+    productUpload.array('images', 4),
+    validate(productValidation.createProduct),
+    productController.createProduct
+  )
   // GET /v1/products → cualquier usuario autenticado puede ver productos
   .get(auth(), validate(productValidation.getProducts), productController.getProducts);
+
+router
+  .route('/:productId/reviews')
+  .post(auth(), validate(productValidation.createReview), productController.createReview);
 
 router
   .route('/:productId')
   // GET /v1/products/:productId → cualquier usuario autenticado
   .get(auth(), validate(productValidation.getProduct), productController.getProduct)
   // PATCH /v1/products/:productId → solo admins
-  .patch(auth('manageUsers'), validate(productValidation.updateProduct), productController.updateProduct)
+  .patch(
+    auth('manageUsers'),
+    productUpload.array('images', 4),
+    validate(productValidation.updateProduct),
+    productController.updateProduct
+  )
   // DELETE /v1/products/:productId → solo admins
   .delete(auth('manageUsers'), validate(productValidation.deleteProduct), productController.deleteProduct);
 

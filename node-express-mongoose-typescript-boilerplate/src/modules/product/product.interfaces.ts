@@ -2,6 +2,15 @@ import { Model, Document } from 'mongoose';
 import { QueryResult } from '../paginate/paginate';
 import { ProductCategory } from './product.constants';
 
+export interface IProductReview {
+  user: string;
+  userName: string;
+  rating: number;
+  comment: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
 // ✅ Define cómo luce un producto en la base de datos
 export interface IProduct {
   name: string;
@@ -10,6 +19,10 @@ export interface IProduct {
   category: ProductCategory;
   stock: number;
   imageUrl?: string;
+  imageUrls: string[];
+  ratingAverage: number;
+  reviewsCount: number;
+  reviews: IProductReview[];
 }
 
 // ✅ IProductDoc = IProduct + métodos de Mongoose (save, delete, etc.)
@@ -25,3 +38,8 @@ export type NewProduct = IProduct;
 
 // ✅ Para actualizar un producto (todos los campos son opcionales)
 export type UpdateProductBody = Partial<IProduct>;
+
+export interface CreateProductReviewBody {
+  rating: number;
+  comment: string;
+}

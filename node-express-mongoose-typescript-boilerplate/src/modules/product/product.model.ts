@@ -4,6 +4,36 @@ import paginate from '../paginate/paginate';
 import { IProductDoc, IProductModel } from './product.interfaces';
 import { PRODUCT_CATEGORIES } from './product.constants';
 
+const productReviewSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    userName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    rating: {
+      type: Number,
+      required: true,
+      min: 1,
+      max: 5,
+    },
+    comment: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+  },
+  {
+    timestamps: true,
+    _id: false,
+  }
+);
+
 const productSchema = new mongoose.Schema<IProductDoc, IProductModel>(
   {
     name: {
@@ -37,6 +67,25 @@ const productSchema = new mongoose.Schema<IProductDoc, IProductModel>(
       type: String,
       trim: true,
       default: '',
+    },
+    imageUrls: {
+      type: [String],
+      default: [],
+    },
+    ratingAverage: {
+      type: Number,
+      min: 0,
+      max: 5,
+      default: 0,
+    },
+    reviewsCount: {
+      type: Number,
+      min: 0,
+      default: 0,
+    },
+    reviews: {
+      type: [productReviewSchema],
+      default: [],
     },
   },
   {

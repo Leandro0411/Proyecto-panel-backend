@@ -11,7 +11,11 @@ const createProductBody: Record<keyof NewProduct, any> = {
   price: Joi.number().required().min(0),      // No puede ser negativo
   category: Joi.string().required().valid(...PRODUCT_CATEGORIES),
   stock: Joi.number().integer().min(0),        // Entero, no negativo
-  imageUrl: Joi.string().uri().allow('').optional(),
+  imageUrl: Joi.string().allow('').optional(),
+  imageUrls: Joi.array().items(Joi.string()).optional(),
+  ratingAverage: Joi.number().min(0).max(5).optional(),
+  reviewsCount: Joi.number().integer().min(0).optional(),
+  reviews: Joi.array().optional(),
 };
 
 // Crear producto — todos los campos requeridos
@@ -43,21 +47,29 @@ export const updateProduct = {
   params: Joi.object().keys({
     productId: Joi.required().custom(objectId),
   }),
-  body: Joi.object()
-    .keys({
-      name: Joi.string(),
-      description: Joi.string(),
-      price: Joi.number().min(0),
-      category: Joi.string().valid(...PRODUCT_CATEGORIES),
-      stock: Joi.number().integer().min(0),
-      imageUrl: Joi.string().uri().allow(''),
-    })
-    .min(1), // ← Exige al menos un campo para actualizar
+  body: Joi.object().keys({
+    name: Joi.string(),
+    description: Joi.string(),
+    price: Joi.number().min(0),
+    category: Joi.string().valid(...PRODUCT_CATEGORIES),
+    stock: Joi.number().integer().min(0),
+    imageUrl: Joi.string().allow(''),
+  }),
 };
 
 // Eliminar producto — solo necesita el ID
 export const deleteProduct = {
   params: Joi.object().keys({
     productId: Joi.string().custom(objectId),
+  }),
+};
+
+export const createReview = {
+  params: Joi.object().keys({
+    productId: Joi.string().custom(objectId),
+  }),
+  body: Joi.object().keys({
+    rating: Joi.number().integer().min(1).max(5).required(),
+    comment: Joi.string().trim().min(3).max(600).required(),
   }),
 };

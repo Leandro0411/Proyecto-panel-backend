@@ -6,6 +6,7 @@ import compression from 'compression';
 import cors from 'cors';
 import passport from 'passport';
 import httpStatus from 'http-status';
+import path from 'path';
 import config from './config/config';
 import { morgan } from './modules/logger';
 import { jwtStrategy } from './modules/auth';
@@ -39,6 +40,9 @@ app.use(ExpressMongoSanitize());
 
 // gzip compression
 app.use(compression());
+
+// static files for uploaded product images
+app.use('/uploads', express.static(path.resolve('uploads')));
 
 // jwt authentication
 app.use(passport.initialize());
